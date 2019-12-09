@@ -5,6 +5,9 @@
  */
 package belajargui;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -258,6 +261,29 @@ public class mahasiswa extends javax.swing.JFrame {
         
         Object [] data = {nim, nama, fakultas, jurusan, alamat, tgl, bln, thn};
         model.addRow(data);
+        
+        try{
+            Connection koneksi = Konek.getK();
+            
+            String sql = "INSERT INTO mahasiswa (nim, nama, fakultas, jurusan, alamat, tgl, bln, thn)"
+                    + "VALUE (?,?,?,?,?,?,?,?)";
+            
+            PreparedStatement p = koneksi.prepareStatement(sql);
+            p.setString(1, nim);
+            p.setString(2, nama);
+            p.setString(3, fakultas);
+            p.setString(4, jurusan);
+            p.setString(5, alamat);
+            p.setInt(6, tgl);
+            p.setInt(7, bln);
+            p.setInt(8, thn);
+            
+            p.executeUpdate();
+            p.close();
+            
+        }catch(SQLException e){
+            System.out.println("error");
+        }
         
         tv_nim.setText("");
         tv_nama.setText("");
